@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #from colorama import init, Fore, Back, Style
 from datetime import datetime
+import sys
 #init()
 
 # 0302 0201 0201 0202 0202 0101 0101 0101 0102 0102 0102 0201 0102 0202 0201 01020 2020 1010 2
@@ -27,11 +28,11 @@ from datetime import datetime
 
 
 
-#lines = []
 longueur_trame = 37
 l = ''
 
-f = open('/var/www/html/log/rflink', 'r')
+f = open(sys.argv[1], 'r')
+#f = open('/var/www/html/log/rflink', 'r')
 for l in  f.readlines():
     if ';DEBUG;Pulses=448;' in l:
         debug = l.strip().split(' : ')[2]
