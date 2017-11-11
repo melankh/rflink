@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #from colorama import init, Fore, Back, Style
+from datetime import datetime
 #init()
 
 # 0302 0201 0201 0202 0202 0101 0101 0101 0102 0102 0102 0201 0102 0202 0201 01020 2020 1010 2
@@ -34,7 +35,12 @@ f = open('/var/www/html/log/rflink', 'r')
 for l in  f.readlines():
     if ';DEBUG;Pulses=448;' in l:
         debug = l.strip().split(' : ')[2]
-        print(debug)
+        timetmp = l.strip().split(' : ')[0]
+        time = timetmp[1:].split(']')[0]
+        # 2017-11-11 12:15:47
+        t = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+        #print(t.strftime('%X %x %Z'))
+        #print(time)
 #        lines.append(debug)
 
 
@@ -71,13 +77,13 @@ for l in  f.readlines():
     
         #print(databin)
         databin = databin[1:37]
-        A = databin[0:8]
-        B = databin[8:10]
-        C = databin[10:12]
-        D = databin[12:24]
-        E = databin[24:28]
-        F = databin[28:37]
-        print("ID:%d  ??:%d  CHANNEL:%d  TEMP:%d  1:%d   HUM:%d \n" % (int(A, 2), int(B, 2), int(C, 2), int(D, 2), int(E, 2), int(F, 2)))
+        ID = databin[0:8] # ID
+        B = databin[8:10] # ???
+        CHANNEL = databin[10:12] # Channel
+        TEMP = databin[12:24] # TEMP
+        E = databin[24:28] # always 1
+        HUM = databin[28:37] # HUM
+        print("%s - ID:%d  ??:%d  CHANNEL:%d  TEMP:%d  1:%d   HUM:%d" % (t, int(ID, 2), int(B, 2), int(CHANNEL, 2) + 1, int(TEMP, 2), int(E, 2), int(HUM, 2)))
         #print("ID:%s ??:%s Canal:%s TEMP:%s  1:%s HUM:%s " % (A, B, C, D, E, F))
     
     f.close()
